@@ -24,7 +24,7 @@ const {
 //   }
 // ]
 
-// GET route
+// GET route to get ALL anime
 animes.get('/', async (req, res) => {
   try {
     const animesList = await getAllAnimes();
@@ -32,6 +32,23 @@ animes.get('/', async (req, res) => {
   } catch (error) {
     console.error('Error ftching animes:', error)
     res.status(500).json({ error: 'An erro occurred while fetching animes.' })
+  }
+})
+
+// GET route to get one specific anime by ID
+animes.get('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const anime = await getOneAnime(id);
+
+    if (anime) {
+      res.status(200).json(anime);
+    } else {
+      res.status(404).json({ error: 'Anime not found.' });
+    }
+  } catch (error) {
+    console.error('Error fetching anime:', error);
+    res.status(500).json({ error: 'An error occurred while fetching the anime.' })
   }
 })
 
@@ -44,6 +61,8 @@ animes.get('/', async (req, res) => {
 //   "name": "test",
 //   "description": "this is anime"
 // }
+
+// POST Route that 
 
 //Write a PUT route that takes user provided data from the request body and updates an existing anime in the database. The route should respond with a 200 and the updated anime. The route should be able to handle a non-existent anime id.
 //if the request body does not contain a name and description, or if the body's name or description have no length, respond with an error
