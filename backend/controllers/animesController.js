@@ -24,6 +24,18 @@ const {
 //   }
 // ]
 
+// GET route
+animes.get('/', async (req, res) => {
+  try {
+    const animesList = await getAllAnimes();
+    res.status(200).json(animesList);
+  } catch (error) {
+    console.error('Error ftching animes:', error)
+    res.status(500).json({ error: 'An erro occurred while fetching animes.' })
+  }
+})
+
+
 //Write a POST route that takes user provided data from the request body and creates a new anime in the database. The route should respond with a 201 status code and the new anime.
 //if the request body does not contain a name and description, or if the body's name or description have no length, respond with an error
 //your response body should look this:
