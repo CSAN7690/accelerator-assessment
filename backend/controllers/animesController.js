@@ -24,7 +24,7 @@ const {
 //   }
 // ]
 
-// GET route to get ALL anime
+// ⭐️ GET route to get ALL anime
 animes.get('/', async (req, res) => {
   try {
     const animesList = await getAllAnimes();
@@ -35,7 +35,7 @@ animes.get('/', async (req, res) => {
   }
 })
 
-// GET route to get one specific anime by ID
+// ⭐️ GET route to get one specific anime by ID
 animes.get('/:id', async (req, res) => {
   const { id } = req.params;
   try {
@@ -62,7 +62,20 @@ animes.get('/:id', async (req, res) => {
 //   "description": "this is anime"
 // }
 
-// POST Route that 
+// ⭐️ POST Route that creates a new anime
+animes.post('/', async (req, res) => {
+  const { name, description } = req.body;
+  if (!name || !description || name.trim().length === 0 || description.trim().length === 0) {
+    return res.status(400).json({ error: 'Name and description are required and cannot be empty.' });
+  }
+  try {
+    const newAnime = await createOneAnime(name, description);
+    res.status(201).json(newAnime);
+  } catch (error) {
+    console.error('Error creating new anime:', error.message || error);
+    res.status(500).json({ error: 'An error occurred while creating the anime.' });
+  }
+});
 
 //Write a PUT route that takes user provided data from the request body and updates an existing anime in the database. The route should respond with a 200 and the updated anime. The route should be able to handle a non-existent anime id.
 //if the request body does not contain a name and description, or if the body's name or description have no length, respond with an error
