@@ -116,4 +116,21 @@ animes.put('/:id', async (req, res) => {
 //   "name": "test1",
 //   "description": "this is anime as well"
 // }
+
+// ⭐️ DELETE Route that deletes an anime by ID in database 💀
+animes.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const existingAnime = await getOneAnime(id);
+    if (!existingAnime) {
+      return res.status(404).json({ error: 'Anime not found.' });
+    }
+    const deletedAnime = await deleteOneAnime(id);
+    res.status(200).json(deletedAnime);
+  } catch (error) {
+    console.error('Error deleting anime:', error.message || error);
+    res.status(500).json({ error: 'An error while deleting the anime.' })
+  }
+})
 module.exports = animes;
